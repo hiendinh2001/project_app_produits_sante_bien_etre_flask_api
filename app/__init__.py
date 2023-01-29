@@ -15,17 +15,17 @@ app.config['PAGE_SIZE'] = 6 #số sản phẩm mỗi trang
 app.config['COMMENT_SIZE'] = 3 #số comment mỗi trang
 app.config['MY_CART'] = 'cart'
 
-MY_SWAGGER = '/swagger'
-MY_API = '/static/swagger.json'
-SWAGGER_PRINT = get_swaggerui_blueprint(
-    MY_SWAGGER,
-    MY_API,
-    config={
-        'app-name': "pythonProject010123"
-    }
-)
+#MY_SWAGGER = '/swagger'
+#MY_API = '/static/swagger.json'
+#SWAGGER_PRINT = get_swaggerui_blueprint(
+#    MY_SWAGGER,
+#    MY_API,
+#    config={
+#        'app-name': "pythonProject010123"
+#    }
+#)
 
-app.register_blueprint(SWAGGER_PRINT, url_prefix=MY_SWAGGER)
+#app.register_blueprint(SWAGGER_PRINT, url_prefix=MY_SWAGGER)
 
 db = SQLAlchemy(app=app)
 babel = Babel(app=app)
