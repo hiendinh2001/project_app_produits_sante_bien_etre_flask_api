@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang-->
+
+{% block title %} Produits {% endblock %}
+
+{% block content %}
+<h1 class="subject">Produits</h1>
+
+<hr>
+
+<form>
+    <input type="text" name="keyword" placeholder="Rechercher un produit..."/> <!--name đã được định nghĩa trong file index.py-->
+    <input type="number" name="from_price" placeholder="Prix de..."/>
+    <input type="number" name="to_price" placeholder="Prix à..."/>
+    <input type="submit" value="Rechercher">
+
+</form>
+
+<hr>
+<table border="1" class="product">
+    <tr>
+        <th></th>
+        <!--<th> Product ID </th>-->
+        <th> Nom du produit </th>
+        <th> Description du produit </th>
+        <th> Prix du produit </th>
+    </tr>
+    {% for p in products %}
+    <!-- Bắt đầu vòng lặp -->
+    <tr>
+        <td>
+            <a href="{{ url_for('product_detail', product_id=p.id) }}">
+            <img src="{{ url_for('static', filename=p.image) }}" width="120" alt="{{p.name}}" />
+            </a>
+        </td>
+        <!--<td>{{ p.id }}</td>-->
+        <td>{{ p.name }}</td>
+        <td>{{ p.description }}</td>
+        <td>{{ "{:,.1f}".format(p.price) }} €</td>
+    </tr>
+    {% endfor %}         <!-- Kết thúc vòng lặp -->
+</table>
+{% endblock %}

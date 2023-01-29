@@ -1,0 +1,143 @@
+{% extends 'admin/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang, file base của admin ở trong env-->
+
+{% block body %}
+<h1 class="subject mb-5">Statistiques de revenus</h1>
+<div class="row">
+  <div class="col-md-6 col-xs-12">
+    <table class="table">
+      <tr>
+        <th>Code de produit</th>
+        <th>Nom du produit</th>
+        <th>Revenus</th>
+      </tr>
+      {% for s in stats %}
+      <tr>
+        <td>{{ s[0] }}</td>
+        <td>{{ s[1] }}</td>
+        <td>
+            {% if s[2] %}
+            {{ "{:,.1f}".format(s[2]) }} €
+            {% else %}
+            0 €
+            {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="col-md-6 col-xs-12">
+    <form>
+      <div class="form-group">
+        <input type="text" class="form-control" name="kw" placeholder="Rechercher un produit..." />
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" onfocus="(this.type='date')" name="from_date" placeholder="Date de début"/>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" onfocus="(this.type='date')" name="to_date" placeholder="Date de fin"/>
+      </div>
+      <input type="submit" value="Rechercher" class="btn btn-info">
+    </form>
+
+    <canvas id="productChartId">
+    </canvas>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-xs-12">
+    <table class="table">
+      <tr>
+        <th>Mois</th>
+        <th>Revenus</th>
+      </tr>
+      {% for s in month_stats %}
+      <tr>
+        <td>{{ s[0] }}</td>
+        <td>{{ "{:,.1f}".format(s[1]) }} €</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="col-md-6 col-xs-12">
+    <form>
+      <div class="form_group">
+        <input type="number"
+               min="2000"
+               name="year"
+               class="form-control"
+               placeholder="Entrez l'an"/>
+      </div>
+      <input type="submit" value="Rechercher" class="btn btn-danger mt-3"/>
+    </form>
+    <canvas id="productMonthChartId"></canvas>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let labels = [], labels2 = []
+  let data = [], data2 = []
+  let colors = [], colors2 = []
+  let borderColors = [], borderColors2 = []
+  let r, g, b;
+
+  {% for s in stats %}
+  {% if s[2] %}
+    labels.push('{{ s[1] }}')
+    data.push({{ s[2] }})
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    borderColors.push(`rgba(${r}, ${g}, ${b}, 1)`)
+  {% endif %}
+  {% endfor %}
+
+  {% for s in month_stats %}
+    labels2.push({{ s[0] }})
+    data2.push({{ s[1] }})
+
+    r = Math.random()*255
+    g = Math.random()*255
+    b = Math.random()*255
+
+    colors2.push(`rgba(${r}, ${g}, ${b}, 0.2)`)
+    borderColors2.push(`rgba(${r}, ${g}, ${b}, 1)`)
+  {% endfor %}
+
+  window.onload = function() {
+    const ctx = document.getElementById('productChartId').getContext('2d');
+    const ctx2 = document.getElementById('productMonthChartId').getContext('2d');
+    loadChart(ctx, labels, data, 'bar', colors, borderColors)
+    loadChart(ctx2, labels2, data2, 'line', colors2, borderColors2)
+  }
+
+function loadChart(ctx, labels, data, type, colors, borderColors) {
+    const myChart = new Chart(ctx, {
+    type: type,
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Statistiques des revenus',
+            data: data,
+            backgroundColor: colors,
+            borderColor: borderColors,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+  });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'layout/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang-->
+
+{% block title %} Mon panier {% endblock %}
+
+{% block content %}
+<h1 class="subject mb-5">Mon panier</h1>
+
+{% if 'cart' in session and session['cart'] %} <!--kiểm tra nó khác null-->
+<table class="table">
+    <tr>
+        <th>Code produit</th>
+        <th>Nom du produit</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th></th>
+    </tr>
+    {% for c in session['cart'].values() %}
+    <tr id="product{{c.id}}">
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ "{:,.1f}".format(c.price) }} €</td>        
+        <td>
+            <div class="form-group>">
+                <input type="number"
+                       min="1"
+                       onblur="updateCart({{ c.id }}, this)"
+                       value="{{ c.quantity }}"
+                       style="width: 100px"
+                       class="form-control"/>
+            </div> <!--onblur : tham chiếu tới đối tượng mà nó đang xử lí là "quantity" -->
+        </td>
+        <td>
+            <input type="button"
+                   onclick="deleteCart({{ c.id }})"
+                   value="Effacer"
+                   class="btn btn-danger"/>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="alert alert-info">
+    <h5>Nombre total de produits : <span class="cart-counter">{{ stats.total_quantity }}</span></h5>
+    <h5>Montant total : <span id="total-amount">{{ "{:,.1f}".format(stats.total_amount) }}</span> €</h5>
+</div>
+
+<div>
+    {% if current_user.is_authenticated %}
+    <input type="button" value="Payer" onclick="pay()" class="btn btn-success"/>
+    {% else %}
+    <p>Veuillez <a href="{{ url_for('user_signin', next='cart') }}">vous connecter</a> pour payer!</p> <!--next : quay trở về trang thanh toán luôn -->
+    {% endif %}
+</div>
+{% else %}
+<p class="text-secondary">Il n'y a pas d'articles dans le panier</p>
+{% endif %}
+
+{% endblock %}

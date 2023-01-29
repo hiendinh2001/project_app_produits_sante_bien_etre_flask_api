@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang-->
+
+{% block title %} Accueil {% endblock %}
+
+{% block content %}
+<h1 class="subject mb-5">Bien-être & Santé au naturel</h1>
+
+
+<!-- Nếu khi trỏ vào 1 categories nào đó trên header mà có sản phẩm : dùng % if produits % -->
+{% if products %} <!--products được gọi trong file index.py, def home-->
+
+<div class="row mt-5">
+    <!-- products ở trong file index.py -->
+    {% for p in products %}
+    <div class="col-lg-4 mb-4">
+        <div class="card p-2">
+          <img class="card-img-top" src="{{ url_for('static', filename=p.image) }}" alt="{{ p.name }}">
+          <div class="card-body">
+            <h4 class="card-title">{{ p.name }}</h4>
+            <p class="card-text">{{ "{:,.1f}".format(p.price) }} €</p>
+            <a href="#" class="btn btn-primary" onclick="addToCart({{ p.id }}, '{{ p.name }}', {{ p.price }})">Ajouter Au Panier</a> <!--name dạng chuỗi nên bỏ trong ''-->
+              <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn btn-info">Voir les détails</a>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!--Nếu khi trỏ vào 1 categories nào đó trên header mà không có sản phẩm : dùng else -->
+{% else %}
+<p><i>Aucun produit retourné!!!</i></p>
+{% endif %}
+
+<!-- Pagination -->
+{% if pages > 1 and 'category_id' not in request.args %} <!--Nếu trang đầu có từ 2 sản phẩm trở lên mới hiện pagination-->
+<ul class="pagination justify-content-center">
+    {% for idx in range(1, pages+1) %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('home', page=idx) }}">{{ idx }}</a></li> <!--home là fonction trong index.py-->
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

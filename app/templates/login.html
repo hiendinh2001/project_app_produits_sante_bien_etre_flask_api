@@ -1,0 +1,29 @@
+{% extends 'layout/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang-->
+
+{% block title %} Connexion {% endblock %}
+
+{% block content %}
+
+{% if err_msg %}
+<div class="alter alter-danger text-center">
+  <h4 class="text-danger">{{ err_msg }}</h4> <!--Nếu bị lỗi nó sẽ hiện tin nhắn này-->
+</div>
+{% endif %}
+
+<div class="text-center">
+    <form class="form-signin" method="post"> <!--methode POST : bấm ấn đăng ký-->
+      <img class="mb-4" src="{{ url_for('static', filename='images/sante_logo.png') }}" alt="Logo" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+      <div class="form-group">
+        <label for="username" class="sr-only">Identifiant</label> <!--for ở label và id ở input phải giống nhau-->
+        <input type="text" id="username" name="username" class="form-control" placeholder="Identifiant" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Mot de passe</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" required>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+      <p class="mt-5 mb-3 text-muted"></p>
+    </form>
+</div>
+{% endblock %}

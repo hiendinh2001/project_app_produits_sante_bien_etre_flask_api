@@ -1,0 +1,70 @@
+{% extends 'layout/base.html' %} <!--Chung cho tất cả các trang, phần ở dưới là sự khác biệt của trang-->
+
+{% block title %} Détails du produit {% endblock %}
+
+{% block content %}
+<h1 class="subject mb-5">{{ product.name }}</h1>
+  <div class="row">
+    <div class="col-md-5 col-xs-12">
+      <img class="card-img-top" src="{{ url_for('static', filename=product.image) }}" width="120" alt="{{product.name}}" />
+    </div>
+    <div class="col-md-7 col-xs-12">
+        <h2> {{ product.name }}</h2>
+        <p> {{ product.description}}</p>
+        <h4> {{ "{:,.1f}".format(product.price) }} €</h4>
+    </div>
+  </div>
+
+<!--Phần bình luận-->
+<!-- Thêm bình luận -->
+{% if current_user.is_authenticated %}
+<div>
+    <div class="form-group mt-3">
+        <textarea class="form-control" id="commentId" placeholder="Commentaire..."></textarea>
+        <input type="button" onclick="addComment({{ product.id }})" class="btn btn-primary mt-3" value="Ajouter un commentaire"/>
+    </div>
+</div>
+
+{% else %}
+<br>
+<p>Veuillez <a href="{{ url_for('user_signin', next='product_detail', product_id=product.id) }}">vous connecter</a> pour payer!</p> <!--next : quay trở về trang chi tiết luôn -->
+{% endif %}
+<br>
+<div id="commentArea">
+    {% for c in comments %}
+<!-- Hiện bình luận -->
+    <div class="row mb-5">
+        <div class="col-md-1 col-xs-1">
+            {% if c.user.avatar and c.user.avatar.startswith('https') %}
+            <img src="{{ c.user.avatar }}" class="img-fluid rounded-circle" alt="{{ c.user.avatar }}"/>
+            {% else %}
+            <img src="{{ url_for('static', filename='images/sante_logo.png') }}" class="img-fluid rounded-circle" alt="demo"/>
+            {% endif %}
+        </div>
+        <div class="col-md-11 col-xs-11">
+            <p>{{ c.content }}</p>
+            <p><em class="my-date">{{ c.created_date }}</em></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if pages > 1 %} <!--Nếu trang đầu có từ 2 sản phẩm trở lên mới hiện pagination-->
+<ul class="pagination justify-content-center">
+    {% for idx in range(1, pages+1) %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('product_detail', product_id=product.id, page=idx) }}">{{ idx }}</a></li> <!--home là fonction trong index.py-->
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script>
+//   window.onload = function() {
+//     let d = document.getElementsByClassName('my-date')
+//     for (let i = 0; i < d.length; i++)
+//         d[i].innerText = moment(d[i].innerText).locale('fr').fromNow()
+//   }
+
+</script>
+
+{% endblock %}
