@@ -7,7 +7,7 @@
   },
   "servers": [
         {
-        "url": "https://hiendinh2001.pythonanywhere.com/"
+        "url": "/"
         }
     ],
   "components": {
