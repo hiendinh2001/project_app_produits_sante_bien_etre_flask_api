@@ -1,7 +1,7 @@
 from flask import Flask
 from urllib.parse import quote
 from flask_sqlalchemy import SQLAlchemy
-from flask_swagger_ui import get_swaggerui_blueprint
+#from flask_swagger_ui import get_swaggerui_blueprint
 import cloudinary
 from flask_login import LoginManager
 from flask_babelex import Babel
