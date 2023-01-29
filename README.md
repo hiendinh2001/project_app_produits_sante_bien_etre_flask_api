@@ -1,1 +1,1 @@
-# project_app_produits_sante_bien_etre_flask_api
+# Mon site "Bien-être & Santé au nature" a pour but de vendre des produits pour la santé et le bien-être.
