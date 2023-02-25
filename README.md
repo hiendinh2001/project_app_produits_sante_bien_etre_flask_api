@@ -1,5 +1,5 @@
-Mon site "Bien-être & Santé au nature" a pour but de vendre des produits pour la santé et le bien-être.
-
+Mon site "Bien-être & Santé au nature" a pour but de vendre des produits pour la santé et le bien-être. 
+https://hiendinh2001.pythonanywhere.com/ <br /> <br />
 Sur mon site, en tant qu'utilisateur, vous pouvez :
 - Consulter tous les produits sur la page d'accueil. Ici, grâce à la pagination, 6 produits s'affichent par page. Vous pouvez cliquer sur les boutons de pagination pour voir les produits suivants. 
 - Consulter les produits par catégorie en choisissant la catégorie sur le header.
